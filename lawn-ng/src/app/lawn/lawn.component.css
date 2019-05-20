@@ -1,0 +1,19 @@
+.info-container {
+    background-color: white;
+}
+
+.heading {
+    background-color: rgb(235, 152, 78);
+    text-align: center;
+    height: 4rem;
+    padding: 1rem;
+}
+
+.stats-container {
+    padding: 3rem;
+    padding-bottom: 0;
+}
+
+.info {
+  font-family: Helvetica, sans-serif;
+}

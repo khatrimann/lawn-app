@@ -1,0 +1,21 @@
+.pac-container {
+    z-index: 1000000 !important;
+ }
+
+   /* This is the working property */
+ ::ng-deep .pac-container {
+    z-index: 100000;
+  }
+
+.weather-container {
+  height: 40rem;
+  background-image: url('../../assets/images/sunny.svg'), url('../../assets/images/windy-wind-svgrepo-com.svg');
+  background-position: top right, bottom left;
+  background-repeat: no-repeat;
+  background-color: white;
+  background-size: 15rem 15rem;
+  position: fixed;
+  width: 37rem;
+  top: 60px;
+  right: 100px;
+}

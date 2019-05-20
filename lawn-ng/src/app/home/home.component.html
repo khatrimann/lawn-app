@@ -1,0 +1,98 @@
+<div class="container my-4">
+
+  <div class="row">
+
+      <button type="button" class="btn btn-light" data-target="#exampleModal" data-toggle="modal"><i class="fa fa-plus" aria-hidden="true"></i> Add Lawn</button>
+
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div *ngIf="lawns" class="my-4">
+        <div class="card bg-transparent mb-3" style="height: 15rem;" *ngFor="let lawn of lawns">
+          <div class="card-header">{{ lawn.street }}</div>
+          <div class="card-body" [routerLink]="['/lawns', lawn._id]">
+            <h5 class="card-title">{{ lawn.city }}</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="container weather-container">
+          <h3 style="padding-top: 5rem; margin-right: 4rem;">Temperature</h3>
+          <p style="font-size: 9rem; margin-left: 2rem;">27&deg;C</p>
+
+          <h2 style="padding-left: 15rem;">Wind</h2>
+          <p style="font-size: 9rem; text-align: right">10 <span style="font-size: 4rem;">Km/h</span></p>
+      </div>
+    </div>
+
+  </div>
+
+
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+
+
+            <form [formGroup]="addLawnForm" (ngSubmit)="register()">
+
+              <div style="z-index: 1000000000 !important;">
+                <input ngx-google-places-autocomplete style="z-index: 10000000!important;" #placesRef="ngx-places" formControlName="searchControl" (change)="addressChange($event)" (onAddressChange)="handleAddressChange($event)"/>
+              </div>
+                  <div class="input-group form-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                    </div>
+                    <input placeholder="street" formControlName="street">
+                  </div>
+
+                  <div class="input-group form-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                    </div>
+                    <input type="text" placeholder="city" formControlName="city">
+                  </div>
+
+                  <div class="input-group form-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                    </div>
+                    <input type="text" placeholder="state" formControlName="state">
+                  </div>
+
+                  <div class="input-group form-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                    </div>
+                    <input type="number" placeholder="zip" formControlName="zip">
+                  </div>
+
+                <div class="form-group">
+                  <input type="submit" value="Register Me" class="btn float-right login_btn" style="width: 7.5rem;">
+                </div>
+              </form>
+
+
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+

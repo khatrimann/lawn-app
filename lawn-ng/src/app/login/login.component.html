@@ -1,0 +1,152 @@
+<div class="container" *ngIf="login">
+  <div class="container">
+    <div class="d-flex justify-content-center h-100">
+      <div class="card">
+        <div class="card-header">
+          <h3>Sign In</h3>
+          <div class="d-flex justify-content-end social_icon">
+            <span><i class="fab fa-facebook-square"></i></span>
+            <span><i class="fab fa-google-plus-square"></i></span>
+            <span><i class="fab fa-twitter-square"></i></span>
+          </div>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="input-group form-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+              </div>
+              <input type="text" class="form-control" formControlName="username" placeholder="username">
+
+            </div>
+            <div class="input-group form-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-key"></i></span>
+              </div>
+              <input type="password" class="form-control" formControlName="password" placeholder="password">
+            </div>
+            <div class="row align-items-center remember">
+              <input type="checkbox">Remember Me
+            </div>
+            <div class="form-group">
+              <input type="submit" value="Login" class="btn float-right login_btn">
+            </div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <div class="d-flex justify-content-center links">
+            Don't have an account?<a (click)="login=false">Sign Up</a>
+          </div>
+          <div class="d-flex justify-content-center">
+            <a href="#">Forgot your password?</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container my-5" *ngIf="!login">
+    <div class="container">
+      <div class="d-flex justify-content-center h-100">
+        <div class="card" style="height: 43rem;">
+          <div class="card-header">
+            <h3>Sign Up</h3>
+            <div class="d-flex justify-content-end social_icon">
+              <span><i class="fab fa-facebook-square"></i></span>
+              <span><i class="fab fa-google-plus-square"></i></span>
+              <span><i class="fab fa-twitter-square"></i></span>
+            </div>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="registerForm" (ngSubmit)="register()">
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <input type="text" class="form-control" formControlName="username" placeholder="username">
+
+              </div>
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-key"></i></span>
+                </div>
+                <input type="password" class="form-control" formControlName="password" placeholder="password">
+              </div>
+
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-address-book"></i></span>
+                </div>
+                <input type="text" class="form-control" formControlName="firstname" placeholder="First Name">
+              </div>
+
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-address-book"></i></span>
+                </div>
+                <input type="text" class="form-control" formControlName="lastname" placeholder="Last Name">
+              </div>
+
+              <div class="form-group">
+                <input ngx-google-places-autocomplete placeholder="Search to autocomplete" [options]="{
+                  types: ['(regions)']
+                }" #placesRef="ngx-places" formControlName="searchControl" (change)="addressChange($event)" (onAddressChange)="handleAddressChange($event)"/>
+              </div>
+
+              <div formGroupName="address">
+                <div class="input-group form-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                  </div>
+                  <input placeholder="street" formControlName="street">
+                </div>
+
+                <div class="input-group form-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                  </div>
+                  <input type="text" placeholder="city" formControlName="city">
+                </div>
+
+                <div class="input-group form-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                  </div>
+                  <input type="text" placeholder="state" formControlName="state">
+                </div>
+
+                <div class="input-group form-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                  </div>
+                  <input type="number" placeholder="zip" formControlName="zip">
+                </div>
+              </div>
+              <div class="form-group">
+                <input type="submit" value="Register Me" class="btn float-right login_btn" style="width: 7.5rem;">
+              </div>
+            </form>
+          </div>
+          <div class="card-footer">
+              <div class="d-flex justify-content-center links">
+                Have an account?<a (click)="login=true">Sign In</a>
+              </div>
+              <div class="d-flex justify-content-center">
+                <a href="#">Forgot your password?</a>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="container">
+      <h1>Angular 2 Google Maps Places Autocomplete</h1>
+      <div class="form-group">
+        <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl">
+      </div>
+      <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+        <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+      </agm-map>
+</div> -->
