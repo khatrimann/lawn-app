@@ -13,7 +13,7 @@ module.exports.fetchData = (req, res, next) => {
         res.setHeader('Content-Type', 'application/json');
         res.json(result);
      });
-}
+};
 
 module.exports.addLawn = (req, res, next) => {
    Lawns.create({
@@ -69,4 +69,4 @@ module.exports.addLawn = (req, res, next) => {
       
 
    });
-}
+};

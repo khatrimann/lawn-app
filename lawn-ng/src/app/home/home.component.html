@@ -22,10 +22,10 @@
     <div class="col">
       <div class="container weather-container">
           <h3 style="padding-top: 5rem; margin-right: 4rem;">Temperature</h3>
-          <p style="font-size: 9rem; margin-left: 2rem;">27&deg;C</p>
+          <p style="font-size: 6rem; margin-left: 2rem;" *ngIf="temp">{{ temp }}&deg;C</p>
 
           <h2 style="padding-left: 15rem;">Wind</h2>
-          <p style="font-size: 9rem; text-align: right">10 <span style="font-size: 4rem;">Km/h</span></p>
+          <p style="font-size: 6rem; text-align: right" *ngIf="windSpeed">{{ windSpeed }} <span style="font-size: 4rem;">Km/h</span></p>
       </div>
     </div>
 

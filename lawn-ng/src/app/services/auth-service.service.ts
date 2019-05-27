@@ -39,9 +39,9 @@ export class AuthServiceService {
    constructor(private http: HttpClient,
      private processHTTPMsgService: ProcessHttpmsgService, private router: Router) {
    }
-   // , {headers: new HttpHeaders({'Authorization': 'bearer ' + this.authToken})}
+   // , {headers: new HttpHeaders({'Authorization': 'Bearer ' + this.authToken})}
    checkJWTtoken() {
-     this.http.get<JWTResponse>(baseURL + 'users/checkJWTtoken', {headers: new HttpHeaders({'Authorization': 'bearer ' + this.authToken})})
+     this.http.get<JWTResponse>(baseURL + 'users/checkJWTtoken', {headers: new HttpHeaders({'Authorization': 'Bearer ' + this.authToken})})
      .subscribe(res => {
        console.log('JWT Token Valid: ', res);
        this.sendUsername(res.user.username);

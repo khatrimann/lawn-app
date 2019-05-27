@@ -63,11 +63,9 @@ var global_id;
 };
 
 module.exports.checkJWT = function (req, res) {
-    console.log(req);
   passport.authenticate('jwt', {session: false}, (err, user, info) => {
     console.log("entered");
-    console.log(user);
-    console.log(req.user);
+    
     if (err)
       return next(err);
     

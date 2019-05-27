@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   addr = {lat: 0, long: 0, address: ''};
 
   login = true;
+  registered = false;
   loginForm = new FormGroup({
     username: new FormControl(''),
     password: new FormControl('')
@@ -131,7 +132,15 @@ export class LoginComponent implements OnInit {
   delete values['address'];
   console.log(values);
 
-  this.authService.signUp(values).subscribe(res => console.log(res));
+  this.authService.signUp(values).subscribe(res => {
+    if (res) {
+      this.registered = res;
+      console.log('Registration successful');
+    } else {
+      console.log('Registration unsuccessful');
+    }
+    console.log(res);
+  });
   this.registerForm.reset();
   }
 

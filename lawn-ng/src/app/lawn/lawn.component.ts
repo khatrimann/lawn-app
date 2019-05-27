@@ -1,3 +1,4 @@
+import { AuthServiceService } from './../services/auth-service.service';
 import { LawnService } from './../services/lawn.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -20,7 +21,7 @@ export class LawnComponent implements OnInit {
   mapType = 'hybrid';
   zoom = 11;
   displayid = 1;
-  displaytype = "Temperature"
+  displaytype = 'Temperature';
 
   public lineChartDataPrecipitation: ChartDataSets[] = [];
   public lineChartDataTemperature: ChartDataSets[] = [];
@@ -36,14 +37,18 @@ export class LawnComponent implements OnInit {
   public lineChartType = 'line';
   public lineChartPlugins = [];
 
-  constructor(private route: ActivatedRoute, private lawnService: LawnService) {
+  constructor(private route: ActivatedRoute, private lawnService: LawnService, private authService: AuthServiceService) {
+    authService.loadUserCredentials();
     this.route.paramMap.subscribe(params => {
 
       let id = params.get('id');
       this.id = id;
 
-      this.lawnService.getLawn(this.id).subscribe(result => { this.lawnResult = result;
-
+      this.lawnService.getLawn(this.id).subscribe(result => {
+        console.log('in result');
+        console.log(result);
+        if (result) {
+          this.lawnResult = result;
         this.dataPrecipitation = this.lawnResult[0].precipitation.precipitation;
         this.dataTemperature = this.lawnResult[0].temperature.temperature;
         this.latitude = this.lawnResult[0].lat;
@@ -59,7 +64,9 @@ export class LawnComponent implements OnInit {
         ];
 
         console.log(this.lineChartDataPrecipitation);
-        console.log(this.lawnResult); });
+        console.log(this.lawnResult);
+       }
+       });
     });
   }
 

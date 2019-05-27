@@ -1,13 +1,13 @@
 <div class="container info-container my-4">
 
   <div class="heading mx-auto my-auto">
-    <h3>Your lawn at: {{ lawnResult[0].street }}, {{ lawnResult[0].city }}</h3>
+    <h3 *ngIf="lawnResult">Your lawn at: {{ lawnResult[0].street }}, {{ lawnResult[0].city }}</h3>
   </div>
 
   <div class="row mx-auto stats-container">
 
     <div class="col">
-      <div class="info">
+      <div class="info" *ngIf="lawnResult">
         <span>_id: {{ lawnResult[0]._id }}</span><br>
         <span>Street: {{ lawnResult[0].street }}</span><br>
         <span>City: {{ lawnResult[0].city }}</span><br>
@@ -63,7 +63,7 @@
   <div class="row mx-auto">
         <agm-map style="width: 100%; height: 20rem; float: right;" [latitude]='latitude' [longitude]='longitude' [zoom]="zoom"
           [mapTypeId]='mapType'>
-          <agm-marker [latitude]="latitude" [longitude]="longitude" [label]="lawnResult[0]._id">
+          <agm-marker *ngIf="lawnResult" [latitude]="latitude" [longitude]="longitude" [label]="lawnResult[0]._id">
           </agm-marker>
         </agm-map>
   </div>

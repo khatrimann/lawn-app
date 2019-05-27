@@ -1,3 +1,4 @@
+import { AuthInterceptor } from './services/auth.interceptor';
 import { ProcessHttpmsgService } from './services/process-httpmsg.service';
 import { AuthServiceService } from './services/auth-service.service';
 import { AuthGuardService } from './services/auth-guard.service';
@@ -8,7 +9,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { LawnComponent } from './lawn/lawn.component';
@@ -18,6 +19,7 @@ import { AgmCoreModule } from '@agm/core';
 import { AddComponent } from './add/add.component';
 import { LawnService } from './services/lawn.service';
 import { HeaderComponent } from './header/header.component';
+import { WeatherService } from './services/weather.service';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,13 @@ import { HeaderComponent } from './header/header.component';
     AuthGuardService,
     AuthServiceService,
     LawnService,
-    ProcessHttpmsgService
+    ProcessHttpmsgService,
+    WeatherService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

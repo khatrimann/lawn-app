@@ -17,7 +17,7 @@ router.post('/login', passport.authenticate('local'), (req, res, next) => {
 
 router.post('/signup', (req, res, next) => {
   controller.signup(req, res, next);
-})
+});
 
 router.get('/checkJWTToken', (req, res) => {
   controller.checkJWT(req, res);
@@ -69,7 +69,7 @@ router.get('/:id', (req, res, next) => {
     .then(result => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(result[0].lawns);
+        res.json({ lawns: result[0].lawns, address: result[0].address });
       });
 });
 

@@ -1,3 +1,4 @@
+import { WeatherService } from './../services/weather.service';
 import { AddressService } from './../services/address.service';
 import { AuthServiceService } from './../services/auth-service.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -26,6 +27,8 @@ export class HomeComponent implements OnInit {
   lawns: any;
   modal = false;
   // searchControl = new FormControl('');
+  windSpeed = undefined;
+  temp = undefined;
 
   addr = {lat: 0, long: 0, address: ''};
 
@@ -41,16 +44,21 @@ export class HomeComponent implements OnInit {
     precipitation: new FormControl(''),
     temperature: new FormControl('')
   });
-  constructor(private authService: AuthServiceService, private addressService: AddressService, private lawnService: LawnService) {
+  constructor(private authService: AuthServiceService, private addressService: AddressService, private lawnService: LawnService, private weatherService: WeatherService) {
     this.authService.loadUserCredentials();
     this.id = authService.id;
     // console.log(this.id);
-    this.addressService.getLawns(this.id).subscribe(lawns => { this.lawns = lawns; console.log(this.lawns); });
+    this.addressService.getLawns(this.id).subscribe(object => { this.lawns = object['lawns']; console.log(this.lawns);
+    weatherService.getWeather(object['address']['lat'], object['address']['long']).subscribe(weatherObj => {
+      this.windSpeed = weatherObj['wind']['speed'];
+      this.temp = weatherObj['main']['temp'];
+    });
+    });
    }
 
-   generatePrecipitation(): number[]{
+   generatePrecipitation(): number[] {
     let prec = [];
-    for(let i=0; i<12; i++) {
+    for (let i = 0; i < 12; i++) {
       prec.push(Math.floor(Math.random() * 128) + 0  );
     }
     return prec;
@@ -58,7 +66,7 @@ export class HomeComponent implements OnInit {
 
   generateTemperature(): number[]{
     let temp = [];
-    for(let i=0; i<12; i++) {
+    for (let i = 0; i < 12; i++) {
       temp.push(Math.floor(Math.random() * 50) + 30  );
     }
     return temp;
@@ -74,7 +82,8 @@ export class HomeComponent implements OnInit {
 
     });
     console.log(this.id);
-    this.addressService.getLawns(this.id).subscribe(lawns => { this.lawns = lawns; console.log(this.lawns); });
+    this.addressService.getLawns(this.id).subscribe(object => { this.lawns = object['lawns'];
+      console.log(this.lawns); });
   }
 
   print(query: any) {
