@@ -1,3 +1,4 @@
+import { WeatherService } from './../services/weather.service';
 import { AuthServiceService } from './../services/auth-service.service';
 import { LawnService } from './../services/lawn.service';
 import { Component, OnInit } from '@angular/core';
@@ -22,6 +23,8 @@ export class LawnComponent implements OnInit {
   zoom = 11;
   displayid = 1;
   displaytype = 'Temperature';
+  temp = undefined;
+  windSpeed = undefined;
 
   public lineChartDataPrecipitation: ChartDataSets[] = [];
   public lineChartDataTemperature: ChartDataSets[] = [];
@@ -37,7 +40,7 @@ export class LawnComponent implements OnInit {
   public lineChartType = 'line';
   public lineChartPlugins = [];
 
-  constructor(private route: ActivatedRoute, private lawnService: LawnService, private authService: AuthServiceService) {
+  constructor(private route: ActivatedRoute, private lawnService: LawnService, private authService: AuthServiceService, private weatherService: WeatherService) {
     authService.loadUserCredentials();
     this.route.paramMap.subscribe(params => {
 
@@ -53,7 +56,10 @@ export class LawnComponent implements OnInit {
         this.dataTemperature = this.lawnResult[0].temperature.temperature;
         this.latitude = this.lawnResult[0].lat;
         this.longitude = this.lawnResult[0].long;
-
+        weatherService.getWeather(this.latitude, this.longitude).subscribe(weatherObj => {
+          this.windSpeed = weatherObj['wind']['speed'];
+          this.temp = weatherObj['main']['temp'];
+        });
 
         this.lineChartDataPrecipitation = [
           { data: this.dataPrecipitation, label: 'Series A' },
