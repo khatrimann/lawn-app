@@ -9,6 +9,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var lawnRouter = require('./routes/lawns');
 var weatherRouter = require('./routes/weather');
+var resetRouter = require('./routes/reset');
 var config = require('./config');
 var passport = require('passport');
 
@@ -38,6 +39,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/lawns', lawnRouter);
 app.use('/weather', weatherRouter);
+app.use('/reset', resetRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

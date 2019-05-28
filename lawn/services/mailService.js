@@ -37,7 +37,7 @@ module.exports.sendPasswordResetMail = (user) =>{
         to: user.email,
         subject: 'Account Verification for '+ user.email + 'on Lawn Application',
         text : 'Please verify your email address',
-        html: `<div> Hi ${user.name} , Please <a href="http://localhost:4200/users/verifyUser?token=${user.resetToken}&email=${user.email}"> click </a> here to verify your account on Job Portal  `
+        html: `<div> Hi ${user.name} , Please <a href="http://localhost:4200/resetPassword/verifyUser?token=${user.resetToken}&email=${user.email}"> click </a> here to verify your account on Job Portal  `
     };
 
     transporter.sendMail(mailOptions, function(error, info){

@@ -21,6 +21,7 @@ import { LawnService } from './services/lawn.service';
 import { HeaderComponent } from './header/header.component';
 import { WeatherService } from './services/weather.service';
 import { ResetComponent } from './reset/reset.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ResetComponent } from './reset/reset.component';
     LawnComponent,
     AddComponent,
     HeaderComponent,
-    ResetComponent
+    ResetComponent,
+    ResetPasswordComponent
   ],
   imports: [
     GooglePlaceModule,

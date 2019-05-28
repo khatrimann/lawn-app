@@ -10,5 +10,5 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuardService] },
   { path: 'lawns/:id', component: LawnComponent, canActivate: [AuthGuardService] },
   { path: '', redirectTo: '/login', pathMatch: 'full'},
-  { path: 'resetPassword', component: ResetComponent}
+  { path: 'resetPassword', component: ResetComponent},
 ];

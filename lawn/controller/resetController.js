@@ -12,6 +12,7 @@ module.exports.reset = (req, res, next) => {
             user.resetToken = token;
             user.save();
             resetService.sendPasswordResetMail(user);
+            res.send('sent');
         } else {
             res.json({ success: false, message: 'Invalid user!!' });
         }
