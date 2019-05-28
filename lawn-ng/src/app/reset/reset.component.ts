@@ -10,7 +10,7 @@ export class ResetComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('laoded');
+    console.log('loaded');
   }
 
 }
