@@ -2,6 +2,7 @@ var Lawns = require('../models/address');   // LawnSchema fetching lawn addresss
 var mongoose = require('mongoose');
 var Temperature = require('../models/temperature');
 var Precipitation = require('../models/precipitation');
+var { check, validationResult } = require('express-validator/check');
 
 
 module.exports.fetchData = (req, res, next) => {
@@ -16,7 +17,8 @@ module.exports.fetchData = (req, res, next) => {
 };
 
 module.exports.addLawn = (req, res, next) => {
-   Lawns.create({
+   if (check(req.body.street).isLength({ min: 1})  && check(req.body.city).isLength({ min: 1})  && check(req.body.state).isLength({ min: 1})  && check(req.body.zip).isLength({ min: 1})  && check(req.body.lat).isLength({ min: 1})  && check(req.body.long).isLength({ min: 1})  && check(req.body.user).isLength({ min: 1})  ){
+      Lawns.create({
       street: req.body.street,
       city: req.body.city,
       state: req.body.state,
@@ -27,6 +29,7 @@ module.exports.addLawn = (req, res, next) => {
    }, (err, lawn) => {
       if (err) {
          console.log(err);
+         res.json({ success: false, message: 'Unable to Register Lawn', err: err });
          return;
       }
 
@@ -35,6 +38,7 @@ module.exports.addLawn = (req, res, next) => {
       }, (err, precipitation) => {
          if (err) {
             console.log(err);
+            res.json({ success: false, message: 'Unable to Register Lawn', err: err });
             return;
          }
          console.log('precipitation id ' + precipitation._id);
@@ -45,6 +49,7 @@ module.exports.addLawn = (req, res, next) => {
          }, (err, temperature) => {
             if (err) {
                console.log(err);
+               res.json({ success: false, message: 'Unable to Register Lawn', err: err });
                return;
             }
    
@@ -55,18 +60,18 @@ module.exports.addLawn = (req, res, next) => {
                if(err) {
                    res.statusCode = 500;
                    res.setHeader('Content-Type', 'application/json');
-                   res.json({err: err});
+                   res.json({ success: false, message: 'Unable to Register Lawn', err: err });
                    return ;
+
                }
                console.log('created lawn');
+               res.json({ success: true, message: 'Registered Lawn' });
            });
          });
 
       });
-
-      
-
-      
-
    });
+} else {
+   res.json({ success: false, message: 'Unable to Register Lawn' });
+}
 };

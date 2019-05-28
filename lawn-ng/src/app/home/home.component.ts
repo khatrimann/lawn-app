@@ -1,7 +1,7 @@
 import { WeatherService } from './../services/weather.service';
 import { AddressService } from './../services/address.service';
 import { AuthServiceService } from './../services/auth-service.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -9,6 +9,7 @@ import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
 import { LawnService } from '../services/lawn.service';
 
+declare let $: any;
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,9 @@ import { LawnService } from '../services/lawn.service';
 export class HomeComponent implements OnInit {
 
   @ViewChild('placesRef') placesRef: GooglePlaceDirective;
-
+  @ViewChild('modal') successModal: ElementRef;
+  @ViewChild('lawnAddModal') addModal: ElementRef;
+  @ViewChild('toast') toast: ElementRef;
 
   id: Subject<string> = undefined;
   username: string = undefined;
@@ -29,6 +32,7 @@ export class HomeComponent implements OnInit {
   // searchControl = new FormControl('');
   windSpeed = undefined;
   temp = undefined;
+  success = true;
 
   addr = {lat: 0, long: 0, address: ''};
 
@@ -44,7 +48,7 @@ export class HomeComponent implements OnInit {
     precipitation: new FormControl(''),
     temperature: new FormControl('')
   });
-  constructor(private authService: AuthServiceService, private addressService: AddressService, private lawnService: LawnService, private weatherService: WeatherService) {
+  constructor(private authService: AuthServiceService, private addressService: AddressService, private lawnService: LawnService, private weatherService: WeatherService, private renderer: Renderer2) {
     this.authService.loadUserCredentials();
     this.id = authService.id;
     // console.log(this.id);
@@ -64,7 +68,7 @@ export class HomeComponent implements OnInit {
     return prec;
   }
 
-  generateTemperature(): number[]{
+  generateTemperature(): number[] {
     let temp = [];
     for (let i = 0; i < 12; i++) {
       temp.push(Math.floor(Math.random() * 50) + 30  );
@@ -93,7 +97,17 @@ export class HomeComponent implements OnInit {
 
   register() {
     console.log(this.addLawnForm.value);
-    this.lawnService.pushLawn(this.id, this.addLawnForm.value).subscribe(res => console.log(res));
+    this.lawnService.pushLawn(this.id, this.addLawnForm.value).subscribe(res => {
+      if (res.success) {
+      console.log(res);
+      this.success = true;
+      $(this.successModal.nativeElement).modal('show');
+      $(this.addModal.nativeElement).modal('hide');
+    } else {
+      console.log(res.success);
+      $(this.toast.nativeElement).toast('show');
+    }
+    });
   }
 
   addressChange(event) {
