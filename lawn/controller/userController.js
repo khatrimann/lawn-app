@@ -18,7 +18,6 @@ module.exports.login = (req, res, next) => {
         res.setHeader('Content-Type', 'application/json');
         res.json({success: true, verified:false, message: 'Please verify your email first', success:false});       
     }
-
 };
 
 module.exports.signup = function(req, res, next) {
