@@ -6,10 +6,19 @@ let mailer = require('../services/mailService');
 
 
 module.exports.login = (req, res, next) => {
-    var token = authenticate.getToken({ _id: req.user._id });
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.json({success: true, token: token, status: 'You are successfully logged in!'});   
+
+    if(req.user.verified){
+        let token = authenticate.getToken({ _id: req.user._id });
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json({success: true, token: token, message: 'You are successfully logged in', success:true});       
+    }
+    else{
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json({success: true, verified:false, message: 'Please verify your email first', success:false});       
+    }
+
 };
 
 module.exports.signup = function(req, res, next) {

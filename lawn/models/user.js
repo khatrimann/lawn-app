@@ -14,7 +14,7 @@ var UserSchema = new Schema({
     },
     address: Address.schema,
     verfied :{
-        type: String,
+        type: Boolean,
         default:false,
         required:true
     },
