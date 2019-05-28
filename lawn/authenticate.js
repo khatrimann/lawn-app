@@ -14,7 +14,6 @@ passport.deserializeUser(User.deserializeUser());
 
 // exports.lawn = passport.use('lawn', new LocalStrategy(Lawn.authenticate()));passport.serializeUser(Lawn.serializeUser());
 // passport.deserializeUser(Lawn.deserializeUser());
-
 exports.getToken = function(user) {
     return jwt.sign(user, config.secretKey,
         {expiresIn: 60*6});
@@ -61,3 +60,11 @@ exports.verifyAdmin = function(req, res, next) {
     }, (err) => next(err))
     .catch((err) => next(err))
 };
+
+
+
+const bcrypt = require('bcryptjs');
+
+exports.createToken = (username, email) =>{
+   return jwt.sign({username: username, email: email},{expiresIn : "2 days"})
+}

@@ -20,10 +20,20 @@ module.exports.sendVerificationMail = (user, verficationToken) => {
         html: `<div> Hi ${user.name} , Please <a href="http://localhost:4200/users/verifyUser?token=${user.activationToken}"> click </a> here to verify your account on Job Portal  `
     }
 
+    transporter.sendMail(mailOptions, function(error, info){
+        if(error){
+            console.log(error);
+        }
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json({success: true, status: 'Registration Successful!',isVerified: false});
+        console.log('Message sent: ' + info.response);
+    });
 }
 
 module.exports.sendPasswordResetMail = (user, resetToken) =>{
 
+    
 }
 
 function sendmail(mailOptions){
@@ -31,6 +41,5 @@ function sendmail(mailOptions){
         if(error){
             console.log(error);
         }
-        console.log('Message sent: ' + info.response);
     });
 }
