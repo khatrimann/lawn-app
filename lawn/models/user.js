@@ -20,6 +20,10 @@ var UserSchema = new Schema({
     },
     activationToken :{
         type: String
+    },
+    email :{
+        type: String,
+        required: true
     }
 
 });

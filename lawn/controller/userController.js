@@ -2,6 +2,8 @@ var User = require('../models/user');
 var passport = require('passport');
 var Address = require('../models/address');
 var authenticate = require('../authenticate');
+let mailer = require('../services/mailService');
+
 
 module.exports.login = (req, res, next) => {
     var token = authenticate.getToken({ _id: req.user._id });
@@ -12,12 +14,12 @@ module.exports.login = (req, res, next) => {
 
 module.exports.signup = function(req, res, next) {
 var global_id;
-    User.register(new User({username: req.body.username, firstname: req.body.firstname, lastname: req.body.lastname, address: null}), 
+    User.register(new User({username: req.body.username, email: req.body.email, firstname: req.body.firstname, lastname: req.body.lastname, address: null}), 
         req.body.password, (err, user) => {
             if(err) {
-            res.statusCode = 500;
-            res.setHeader('Content-Type', 'application/json');
-            res.json({err: err});
+                res.statusCode = 500;
+                res.setHeader('Content-Type', 'application/json');
+                res.json({err: err});
             } else {
                 var global_id = user._id;
                 console.log(global_id);
@@ -46,16 +48,14 @@ var global_id;
                         });
                 user.save((err, user) => {
                     if (err) {
-                    console.log("second err");
-                    res.statusCode = 500;
-                    res.setHeader('Content-Type', 'application/json');
-                    res.json({err: err});
-                    return ;
+                        console.log("second err");
+                        res.statusCode = 500;
+                        res.setHeader('Content-Type', 'application/json');
+                        res.json({err: err});
+                        return ;
                     }
                     passport.authenticate('local')(req, res, () => {
-                    res.statusCode = 200;
-                    res.setHeader('Content-Type', 'application/json');
-                    res.json({success: true, status: 'Registration Successful!'});
+                            mailer.sendVerificationMail(user,authenticate.createToken(user.username, user.email));
                     });
                 });
             }
