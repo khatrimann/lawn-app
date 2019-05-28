@@ -13,6 +13,15 @@ var UserSchema = new Schema({
         required: true
     },
     address: Address.schema,
+    verfied :{
+        type: String,
+        default:false,
+        required:true
+    },
+    activationToken :{
+        type: String
+    }
+
 });
 
 UserSchema.plugin(passportlocal);
