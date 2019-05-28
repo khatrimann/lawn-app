@@ -18,12 +18,15 @@ var UserSchema = new Schema({
         default:false,
         required:true
     },
-    activationToken :{
+    activationToken: {
         type: String
     },
     email :{
         type: String,
         required: true
+    },
+    resetToken: {
+        type: String
     }
 
 });
