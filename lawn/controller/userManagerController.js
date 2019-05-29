@@ -18,3 +18,16 @@ module.exports.reset = (req, res, next) => {
         }
     });    
 };
+
+module.exports.verify = (req, res, next) => {
+    User.findOne({ email: req.query.email})
+    .then(user => {
+        if (user.activationToken === req.query.token) {
+            user.verified = true;
+            user.save();
+            res.json({ success: true });
+        } else {
+            res.json({ success: false })
+        }
+    });
+};
