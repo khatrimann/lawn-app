@@ -22,6 +22,7 @@ import { HeaderComponent } from './header/header.component';
 import { WeatherService } from './services/weather.service';
 import { ResetComponent } from './reset/reset.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { VerifyUserComponent } from './verify-user/verify-user.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     AddComponent,
     HeaderComponent,
     ResetComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    VerifyUserComponent
   ],
   imports: [
     GooglePlaceModule,

@@ -13,7 +13,7 @@ var UserSchema = new Schema({
         required: true
     },
     address: Address.schema,
-    verfied :{
+    verified :{
         type: Boolean,
         default:false,
         required:true
@@ -23,7 +23,8 @@ var UserSchema = new Schema({
     },
     email :{
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     resetToken: {
         type: String

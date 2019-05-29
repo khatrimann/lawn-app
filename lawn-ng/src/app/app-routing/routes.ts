@@ -1,3 +1,4 @@
+import { VerifyUserComponent } from './../verify-user/verify-user.component';
 import { ResetComponent } from './../reset/reset.component';
 import { AuthGuardService } from './../services/auth-guard.service';
 import { LawnComponent } from './../lawn/lawn.component';
@@ -11,4 +12,5 @@ export const routes: Routes = [
   { path: 'lawns/:id', component: LawnComponent, canActivate: [AuthGuardService] },
   { path: '', redirectTo: '/login', pathMatch: 'full'},
   { path: 'resetPassword', component: ResetComponent},
+  { path: 'verifyUser', component: VerifyUserComponent}
 ];
