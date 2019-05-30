@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
   registerForm = new FormGroup({
     username: new FormControl(''),
     password: new FormControl(''),
+    email: new FormControl(''),
     firstname: new FormControl(''),
     lastname: new FormControl(''),
     searchControl: new FormControl(''),
@@ -136,12 +137,12 @@ export class LoginComponent implements OnInit {
     if (res) {
       this.registered = res;
       console.log('Registration successful');
+      this.registerForm.reset();
     } else {
       console.log('Registration unsuccessful');
     }
     console.log(res);
   });
-  this.registerForm.reset();
   }
 
 }

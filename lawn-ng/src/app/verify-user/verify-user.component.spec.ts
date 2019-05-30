@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ResetComponent } from './reset.component';
+import { VerifyUserComponent } from './verify-user.component';
 
-describe('ResetComponent', () => {
-  let component: ResetComponent;
-  let fixture: ComponentFixture<ResetComponent>;
+describe('VerifyUserComponent', () => {
+  let component: VerifyUserComponent;
+  let fixture: ComponentFixture<VerifyUserComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ResetComponent ]
+      declarations: [ VerifyUserComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ResetComponent);
+    fixture = TestBed.createComponent(VerifyUserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

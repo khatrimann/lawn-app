@@ -3,7 +3,7 @@ var passport = require('passport');
 var Address = require('../models/address');
 var authenticate = require('../authenticate');
 let mailer = require('../services/mailService');
-
+global.crypto = require('crypto') 
 
 module.exports.login = (req, res, next) => {
 
@@ -22,7 +22,8 @@ module.exports.login = (req, res, next) => {
 
 module.exports.signup = function(req, res, next) {
 var global_id;
-    User.register(new User({username: req.body.username, email: req.body.email, firstname: req.body.firstname, lastname: req.body.lastname, address: null}), 
+var activationToken = crypto.randomBytes(32).toString('hex'); 
+    User.register(new User({username: req.body.username, firstname: req.body.firstname, lastname: req.body.lastname, address: null, email: req.body.email, activationToken: activationToken}), 
         req.body.password, (err, user) => {
             if(err) {
                 res.statusCode = 500;
@@ -63,7 +64,10 @@ var global_id;
                         return ;
                     }
                     passport.authenticate('local')(req, res, () => {
-                            mailer.sendVerificationMail(user,authenticate.createToken(user.username, user.email));
+                        res.statusCode = 200; 
+                        res.setHeader('Content-Type', 'application/json'); 
+                         //mailer.sendVerificationMail(res, req.body.email, user, activationToken); 
+                         res.json({success: true, status: 'Registration Successful!'}); 
                     });
                 });
             }

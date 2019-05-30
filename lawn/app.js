@@ -8,6 +8,7 @@ var cors = require('cors');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var lawnRouter = require('./routes/lawns');
+var userManagerRouter = require('./routes/userManager');
 var weatherRouter = require('./routes/weather');
 var config = require('./config');
 var passport = require('passport');
@@ -38,6 +39,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/lawns', lawnRouter);
 app.use('/weather', weatherRouter);
+app.use('/manager', userManagerRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
