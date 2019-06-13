@@ -1,5 +1,5 @@
 import { WeatherService } from './../services/weather.service';
-import { AuthServiceService } from './../services/auth-service.service';
+import { AuthService } from '../services/auth.service';
 import { LawnService } from './../services/lawn.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -40,7 +40,7 @@ export class LawnComponent implements OnInit {
   public lineChartType = 'line';
   public lineChartPlugins = [];
 
-  constructor(private route: ActivatedRoute, private lawnService: LawnService, private authService: AuthServiceService, private weatherService: WeatherService) {
+  constructor(private route: ActivatedRoute, private lawnService: LawnService, private authService: AuthService, private weatherService: WeatherService) {
     authService.loadUserCredentials();
     this.route.paramMap.subscribe(params => {
 

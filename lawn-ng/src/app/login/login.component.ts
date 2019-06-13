@@ -1,4 +1,4 @@
-import { AuthServiceService } from './../services/auth-service.service';
+import { AuthService } from '../services/auth.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
     })
   });
 
-  constructor(private authService: AuthServiceService, private route: Router) { }
+  constructor(private authService: AuthService, private route: Router) { }
 
 
   ngOnInit() {
@@ -53,13 +53,14 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     // TODO: Use EventEmitter with form value
     console.log(this.loginForm.value);
-    this.authService.logIn(this.loginForm.value).subscribe(res => {
+    this.authService.login(this.loginForm.value).subscribe(res => {
       console.log(res);
       if (res.success) {
-      this.route.navigate(['/home']);
-    } else {
-      console.log('Invalid');
-    }
+        this.authService.storeUserCredentials({username: this.loginForm.get('username').value, token: res.token, id: res.id });
+        this.authService.sendUsername(res.username);
+        console.log('sent', res.username);
+        this.route.navigate(['home']);
+      }
     });
 
   }
@@ -133,7 +134,7 @@ export class LoginComponent implements OnInit {
   delete values['address'];
   console.log(values);
 
-  this.authService.signUp(values).subscribe(res => {
+  this.authService.signup(values).subscribe(res => {
     if (res) {
       this.registered = res;
       console.log('Registration successful');

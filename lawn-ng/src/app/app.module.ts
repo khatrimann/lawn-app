@@ -1,6 +1,6 @@
-import { AuthInterceptor } from './services/auth.interceptor';
+import { AuthInterceptor, UnauthorizedInterceptor } from './services/auth.interceptor';
 import { ProcessHttpmsgService } from './services/process-httpmsg.service';
-import { AuthServiceService } from './services/auth-service.service';
+import { AuthService} from './services/auth.service';
 import { AuthGuardService } from './services/auth-guard.service';
 import { AddressService } from './services/address.service';
 import { AppRoutingModule } from './app-routing/app-routing.module';
@@ -46,13 +46,18 @@ import { VerifyUserComponent } from './verify-user/verify-user.component';
   providers: [
     AddressService,
     AuthGuardService,
-    AuthServiceService,
+    AuthService,
     LawnService,
     ProcessHttpmsgService,
     WeatherService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UnauthorizedInterceptor,
       multi: true
     }
   ],

@@ -1,19 +1,20 @@
+import { ProcessHttpmsgService } from './process-httpmsg.service';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject, config } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { baseURL } from '../shared/baseurl';
-import { ProcessHttpmsgService } from './process-httpmsg.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Config } from '../shared/config';
-import { Router } from '@angular/router';
+
 
 interface AuthResponse {
   status: string;
   success: string;
   token: string;
+  id: string;
 }
+
 
 interface JWTResponse {
   status: string;
@@ -24,71 +25,63 @@ interface JWTResponse {
 @Injectable({
   providedIn: 'root'
 })
-
-export class AuthServiceService {
+export class AuthService {
 
   tokenKey = 'JWT';
   isAuthenticated: Boolean = false;
   username: Subject<string> = new Subject<string>();
   authToken: string = undefined;
-  id: Subject<string> = new Subject<string>();
+  uName = undefined;
   loggedIn: Subject<Boolean> = new Subject<Boolean>();
   loggedOut: Subject<Boolean> = new Subject<Boolean>();
 
-
    constructor(private http: HttpClient,
-     private processHTTPMsgService: ProcessHttpmsgService, private router: Router) {
+     private processHTTPMsgService: ProcessHttpmsgService) {
    }
-   // , {headers: new HttpHeaders({'Authorization': 'Bearer ' + this.authToken})}
+   // , {headers: new HttpHeaders({'Authorization': 'bearer ' + this.authToken})}
    checkJWTtoken() {
-     this.http.get<JWTResponse>(baseURL + 'users/checkJWTtoken', {headers: new HttpHeaders({'Authorization': 'Bearer ' + this.authToken})})
+     this.http.get<JWTResponse>(baseURL + 'users/checkJWTtoken', {headers: new HttpHeaders({'Authorization': 'bearer ' + this.authToken})})
      .subscribe(res => {
        console.log('JWT Token Valid: ', res);
        this.sendUsername(res.user.username);
-       // this.sendId(res.user._id);
        this.sendLoggedIn(true);
+
      },
      err => {
        console.log('JWT Token invalid: ', err);
        this.destroyUserCredentials();
-       this.logOut();
-
      });
    }
 
    sendUsername(name: string) {
+     if (name) {
+     console.log('88888888888888', name);
+     this.uName = name;
      this.username.next(name);
+     }
    }
 
-  //  sendId(id: string) {
-  //   this.id.next(id);
-  // }
 
-  sendLoggedIn(status: Boolean) {
-    this.loggedIn.next(status);
-  }
-
-  sendLoggedOut(status: Boolean) {
-    this.loggedOut.next(status);
-  }
 
    clearUsername() {
      this.username.next(undefined);
    }
 
-   loadUserCredentials() {
+   getData() {
+     let id = localStorage.getItem('id');
+     return this.http.get(baseURL + 'users/getUsersbyAdmin?id=' + id);
+   }
 
+   loadUserCredentials() {
      const credentials = JSON.parse(localStorage.getItem(this.tokenKey));
      console.log('loadUserCredentials ', credentials);
      if (credentials && credentials.username !== undefined) {
-      this.useCredentials(credentials);
-      if (this.authToken) {
+       this.useCredentials(credentials);
+       if (this.authToken) {
         this.checkJWTtoken();
-      }
-
-    }
-
-  }
+       }
+     }
+   }
 
    storeUserCredentials(credentials: any) {
      console.log('storeUserCredentials ', credentials);
@@ -100,13 +93,8 @@ export class AuthServiceService {
      this.isAuthenticated = true;
      this.sendUsername(credentials.username);
      this.authToken = credentials.token;
-     console.log('token is ' + this.authToken);
      const helper = new JwtHelperService();
-     console.log(helper.decodeToken(this.authToken));
-     this.id = helper.decodeToken(this.authToken)._id;
-     // this.userid = helper.decodeToken(this.authToken)._id;
-     console.log('id is ' + this.id);
-     // this.sendId(helper.decodeToken(this.authToken)._id);
+     console.log(typeof(helper.decodeToken(this.authToken)._id));
      this.sendLoggedIn(true);
      this.sendLoggedOut(false);
    }
@@ -120,50 +108,44 @@ export class AuthServiceService {
      this.sendLoggedIn(false);
    }
 
-   signUp(user: any): Observable<any> {
-     return this.http.post<any>(baseURL + 'users/signup', user);
-
+   signup(body: any): Observable<any> {
+      return this.http.post<any>(baseURL + 'users/signup', body);
    }
 
-   logIn(user: any): Observable<any> {
+   login(user: any): any {
      return this.http.post<AuthResponse>(baseURL + 'users/login',
-       {'username': user.username, 'password': user.password})
-       .pipe( map(res => {
-           this.storeUserCredentials({username: user.username, token: res.token});
-           return {'success': true, 'username': user.username };
-       }),
-        catchError(error => this.processHTTPMsgService.handleError(error)));
+       {'username': user.username, 'password': user.password});
    }
 
    logOut() {
      this.destroyUserCredentials();
-     this.sendLoggedIn(false);
-     this.sendLoggedOut(true);
-     this.router.navigate(['/login']);
    }
 
    isLoggedIn(): Boolean {
      return this.isAuthenticated;
    }
 
-   getUsername(): Observable<string> {
+   getUsername(): any {
      return this.username.asObservable();
    }
-
-   getId(): Observable<string> {
-    return this.id.asObservable();
-  }
 
    getToken(): string {
      return this.authToken;
    }
 
    getLoggedIn(): Observable<Boolean> {
-     return this.loggedIn.asObservable();
-   }
-
-   getLoggedOut(): Observable<Boolean> {
-    return this.loggedOut.asObservable();
+    return this.loggedIn.asObservable();
   }
 
+  getLoggedOut(): Observable<Boolean> {
+   return this.loggedOut.asObservable();
+ }
+
+ sendLoggedIn(status: Boolean) {
+  this.loggedIn.next(status);
+}
+
+sendLoggedOut(status: Boolean) {
+  this.loggedOut.next(status);
+}
 }

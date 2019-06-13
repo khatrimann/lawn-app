@@ -7,9 +7,9 @@ var User = require('../models/user');
 var mongoose = require('mongoose');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+// router.get('/', function(req, res, next) {
+//   res.send('respond with a resource');
+// });
 
 router.post('/login', passport.authenticate('local'), (req, res, next) => {
   controller.login(req, res, next);
@@ -23,11 +23,11 @@ router.get('/checkJWTToken', (req, res) => {
   controller.checkJWT(req, res);
 });
 
-router.get('/:id', (req, res, next) => {
+router.get('/', passport.authenticate('jwt'), (req, res, next) => {
     User.aggregate([
         {
           $match: {
-          _id: mongoose.Types.ObjectId(req.params.id)
+          _id: req.user._id
           }
         },
         {

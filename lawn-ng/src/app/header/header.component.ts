@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
-import { AuthServiceService } from './../services/auth-service.service';
+import { AuthService } from '../services/auth.service';
 import { Component, OnInit, OnChanges } from '@angular/core';
 
 @Component({
@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit {
   isLoggedOut: Boolean;
 
 
-  constructor(private authService: AuthServiceService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router) {
     this.authService.getLoggedIn().subscribe(loggedIn => {
       this.isLoggedin = loggedIn;
       console.log(this.isLoggedin);

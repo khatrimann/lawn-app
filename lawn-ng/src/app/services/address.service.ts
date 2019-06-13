@@ -9,7 +9,7 @@ export class AddressService {
 
   constructor(private http: HttpClient) { }
 
-  getLawns(id: any) {
-    return this.http.get(baseURL + 'users/' + id);
+  getLawns() {
+    return this.http.get(baseURL + 'users');
   }
 }

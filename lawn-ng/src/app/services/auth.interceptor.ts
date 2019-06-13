@@ -1,6 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse } from '@angular/common/http';
-import { AuthServiceService } from './auth-service.service';
+import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -9,9 +9,9 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private inj: Injector) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const authServiceService = this.inj.get(AuthServiceService);
+    const authService = this.inj.get(AuthService);
     // Get the auth header from the service.
-    const authToken = authServiceService.getToken();
+    const authToken = authService.getToken();
     // console.log("Interceptor: " + authToken);
     // Clone the request to add the new header.
     const authReq = req.clone({headers: req.headers.set('Authorization', 'Bearer ' + authToken)});
@@ -26,8 +26,8 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
   constructor(private inj: Injector) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const authServiceService = this.inj.get(AuthServiceService);
-    const authToken = authServiceService.getToken();
+    const authService = this.inj.get(AuthService);
+    const authToken = authService.getToken();
 
     return next
       .handle(req)
@@ -41,7 +41,7 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
 
           if (err.status === 401 && authToken) {
             console.log('Unauthorized Interceptor: ', err);
-            authServiceService.checkJWTtoken();
+            authService.checkJWTtoken();
           }
         }
       }));

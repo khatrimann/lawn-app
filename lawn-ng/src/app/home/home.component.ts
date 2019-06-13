@@ -1,6 +1,6 @@
 import { WeatherService } from './../services/weather.service';
 import { AddressService } from './../services/address.service';
-import { AuthServiceService } from './../services/auth-service.service';
+import { AuthService } from './../services/auth.service';
 import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs';
@@ -48,11 +48,9 @@ export class HomeComponent implements OnInit {
     precipitation: new FormControl(''),
     temperature: new FormControl('')
   });
-  constructor(private authService: AuthServiceService, private addressService: AddressService, private lawnService: LawnService, private weatherService: WeatherService, private renderer: Renderer2) {
+  constructor(private authService: AuthService, private addressService: AddressService, private lawnService: LawnService, private weatherService: WeatherService, private renderer: Renderer2) {
     this.authService.loadUserCredentials();
-    this.id = authService.id;
-    // console.log(this.id);
-    this.addressService.getLawns(this.id).subscribe(object => { this.lawns = object['lawns']; console.log(this.lawns);
+    this.addressService.getLawns().subscribe(object => { this.lawns = object['lawns']; console.log(this.lawns);
     weatherService.getWeather(object['address']['lat'], object['address']['long']).subscribe(weatherObj => {
       this.windSpeed = weatherObj['wind']['speed'];
       this.temp = weatherObj['main']['temp'];
@@ -78,15 +76,15 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.authService.loadUserCredentials();
-    this.id = this.authService.id;
+    // this.id = this.authService.id;
     this.addLawnForm.patchValue({
       user: this.id,
       precipitation: this.generatePrecipitation(),
       temperature: this.generateTemperature(),
 
     });
-    console.log(this.id);
-    this.addressService.getLawns(this.id).subscribe(object => { this.lawns = object['lawns'];
+    // console.log(this.id);
+    this.addressService.getLawns().subscribe(object => { this.lawns = object['lawns'];
       console.log(this.lawns); });
   }
 
@@ -97,7 +95,7 @@ export class HomeComponent implements OnInit {
 
   register() {
     console.log(this.addLawnForm.value);
-    this.lawnService.pushLawn(this.id, this.addLawnForm.value).subscribe(res => {
+    this.lawnService.pushLawn(this.addLawnForm.value).subscribe(res => {
       if (res.success) {
       console.log(res);
       this.success = true;
