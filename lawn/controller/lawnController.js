@@ -25,7 +25,7 @@ module.exports.addLawn = (req, res, next) => {
       zip: req.body.zip,
       lat: req.body.lat,
       long: req.body.long,
-      user: mongoose.Types.ObjectId(req.body.user)
+      user: req.user._id
    }, (err, lawn) => {
       if (err) {
          console.log(err);

@@ -17,7 +17,8 @@ export class VerifyUserComponent implements OnInit {
     this.token = route.snapshot.queryParamMap.get('token');
     console.log(this.email, this.token);
     userManagerService.verifyUser(this.email, this.token).subscribe(res => {
-      if (res.verified) {
+      console.log(res);
+      if (res.success) {
         this.verified = true;
       }
     });

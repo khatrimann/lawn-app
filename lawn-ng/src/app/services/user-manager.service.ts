@@ -11,6 +11,6 @@ export class UserManagerService {
   constructor(private http: HttpClient) { }
 
   verifyUser(email, token): Observable<any> {
-    return this.http.get<any>(baseURL + `manager/verify?email?=${email}&token=${token}`);
+    return this.http.get<any>(baseURL + `manager/verify?email=${email}&token=${token}`);
   }
 }
